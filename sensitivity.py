@@ -103,6 +103,13 @@ def coverage(start, end):
 	total_amount = (datetime.datetime(3000,1,1)-datetime.datetime(1970,1,1)).total_seconds()
 	return 1.0*raw_coverage/total_amount
 
+# Assume non overlapping
+def overall_coverage(intvervalList):
+	cov = 0
+	for interval in intvervalList:
+		cov += coverage(interval[0], interval[1])
+	return cov
+
 # invert_id_map:
 # key: clusterid
 # value: index list
@@ -113,6 +120,9 @@ for i in range(len(new_ids)):
 	else:
 		invert_id_map[new_ids[i]].append(i)
 
+#keyidmap
+# key: clusterid
+# value: list of station id
 keyidmap = {}
 for cid in invert_id_map:
 	keyidmap[cid] = mapping(invert_id_map[cid])
