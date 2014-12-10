@@ -106,9 +106,8 @@ def coverage(start, end):
 # Assume non overlapping
 def overall_coverage(intvervalList):
 	cov = 0
-	if not len(intvervalList):
-		for interval in intvervalList:
-			cov += coverage(interval[0], interval[1])
+	for interval in intvervalList:
+		cov += coverage(interval[0], interval[1])
 	return cov
 
 # invert_id_map:
