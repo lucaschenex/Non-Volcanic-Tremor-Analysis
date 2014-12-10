@@ -41,8 +41,10 @@ with open("stations.txt", "rb") as csvfile:
 
 station_id_map = stations_info.keys()
 vectors = []
+vector_key_map = []
 for key in station_id_map:
 	vectors.append([float(stations_info[key]["Latitude"]), float(stations_info[key]["Longitude"])])
+	vector_key_map.append(key)
 
 def euclidean(a, b):
 	return np.linalg.norm(np.array(a)-np.array(b))
@@ -58,30 +60,84 @@ def get_distance_matrix(points, distance_function):
         distances.append (temp)
     return distances
 
+
+
+# def timespan(list):
+
+
+
 nb_clusters = 15 # this is the number of cluster the dataset is supposed to be partitioned into
 distances = get_distance_matrix(vectors, euclidean)
 clusterid, error, nfound = Pycluster.kmedoids(distances, nclusters= nb_clusters, npass=100)
+
+
 
 uniq_ids = list(set(clusterid))
 
 new_ids = [ uniq_ids.index(val) for val in clusterid]
 
-
-myColorMap =plt.cm.Accent_r
-for i in range(len(clusterid)):
-    p = vectors[i]
-    # convert the new_ids value to a value between 0 and 1
-    c = float(new_ids[i])/len(uniq_ids)
-    plt.scatter (p[0], p[1], color=myColorMap(c) )
+# print uniq_ids
+# print new_ids
 
 
 
-for i in uniq_ids:
-    p = vectors[i]
-    plt.scatter (p[0], p[1], color = myColorMap(0), marker = "+" )
+#############################################
+# new_ids  ->  index:clusterid 				#
+# vectors  ->  index:location				#
+# vector_key_map -> index:keyname			#
+#############################################
 
-plt.grid()
-plt.show()
+def mapping(idlist):
+	result = []
+	for i in idlist:
+		result.append(vector_key_map[i])
+	return result
+
+def coverage(start, end)
+
+
+# invert_id_map:
+# key: clusterid
+# value: index list
+invert_id_map = {}
+for i in range(len(new_ids)):
+	if new_ids[i] not in invert_id_map.keys():
+		invert_id_map[new_ids[i]] = [i]
+	else:
+		invert_id_map[new_ids[i]].append(i)
+
+keyidmap = {}
+for cid in invert_id_map:
+	keyidmap[cid] = mapping(invert_id_map[cid])
+print keyidmap
+
+
+
+
+
+
+
+
+
+# myColorMap =plt.cm.Accent_r
+# for i in range(len(clusterid)):
+#     p = vectors[i]
+#     # convert the new_ids value to a value between 0 and 1
+#     c = float(new_ids[i])/len(uniq_ids)
+#     plt.scatter (p[0], p[1], color=myColorMap(c) )
+
+
+
+# for i in uniq_ids:
+#     p = vectors[i]
+#     plt.scatter (p[0], p[1], color = myColorMap(0), marker = "+" )
+
+# plt.grid()
+# plt.show()
+
+
+
+
 
 
 		
