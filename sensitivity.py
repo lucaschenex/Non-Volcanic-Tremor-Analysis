@@ -4,6 +4,9 @@ import Pycluster
 import numpy as np
 import matplotlib.pyplot as plt
 
+import datetime
+import time
+
 north_bound = 42
 west_bound = -124
 stations_info = dict()
@@ -93,8 +96,12 @@ def mapping(idlist):
 		result.append(vector_key_map[i])
 	return result
 
-def coverage(start, end)
-
+def coverage(start, end):
+	tstart = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S")
+	tend = datetime.datetime.strptime(end, "%Y-%m-%dT%H:%M:%S")
+	raw_coverage = (tend-tstart).total_seconds()
+	total_amount = (datetime.datetime(3000,1,1)-datetime.datetime(1970,1,1)).total_seconds()
+	return 1.0*raw_coverage/total_amount
 
 # invert_id_map:
 # key: clusterid
@@ -109,7 +116,8 @@ for i in range(len(new_ids)):
 keyidmap = {}
 for cid in invert_id_map:
 	keyidmap[cid] = mapping(invert_id_map[cid])
-print keyidmap
+
+print coverage("1996-10-09T22:30:00", "3000-01-01T00:00:00")
 
 
 
